@@ -88,4 +88,15 @@ structure SepHom where
   imA : Array Nat
   imB : Array Nat
 
+/-- One product pair `(u, v)` of the witness together with its partner
+pair `(pu, pv)` and the conjugated-relator pieces certifying
+`u ++ v = pu ++ pv` in Γ. Emitted in canonical A-major order so that
+coverage of the full product grid is a plain list equality. -/
+structure PartnerCert where
+  u : List Letter
+  v : List Letter
+  pu : List Letter
+  pv : List Letter
+  pieces : List (List Letter × Nat × Bool)
+
 end Karanos

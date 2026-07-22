@@ -57,7 +57,20 @@ distinctness pairs separated by two quotients; 561 product-coincidence
 equalities certified in 667 shared conjugated-relator lemmas totalling
 about 34,000 letters.
 
-Status: **under construction.** Core, generated data, and the extraction
-pipeline are in place; the Lean soundness proofs and final assembly are
-being written. This notice is removed when the axiom gate passes on
-`NonUP.lean`.
+## Verifying
+
+```
+lake exe cache get
+lake build
+scripts/axiom_gate.sh
+```
+
+The gate re-checks every theorem in the library (122 at last count)
+against the allowed axiom set and fails on any `sorry`, any
+`native_decide`, or any axiom beyond the standard three. CI runs it on
+every push. The headline:
+
+```
+'Karanos.gamma_not_uniqueProds' depends on axioms:
+  [propext, Classical.choice, Quot.sound]
+```

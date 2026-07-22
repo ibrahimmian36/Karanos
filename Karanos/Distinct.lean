@@ -57,7 +57,7 @@ theorem abHom_mk (x : FreeGroup Gen) :
 /-- Letter-level compatibility of the free lift. -/
 theorem lift_abGen_toFree (l : Letter) :
     FreeGroup.lift abGen l.toFree = Multiplicative.ofAdd l.abVal := by
-  cases l <;> simp [Letter.toFree, Letter.abVal, FreeGroup.lift_apply_of, abGen] <;> rfl
+  cases l <;> simp [Letter.toFree, Letter.abVal, FreeGroup.lift_apply_of, abGen]
 
 /-- Word-level compatibility: the descent computes the letter fold. -/
 theorem abHom_eval (w : List Letter) :
