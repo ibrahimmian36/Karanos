@@ -117,16 +117,50 @@ theorem pieceExpand_mem_normalClosure (p : List Letter × Nat × Bool)
     (hrel : ∀ r ∈ relWords, wordToFree r ∈ relators) :
     wordToFree (pieceExpand p) ∈ Subgroup.normalClosure relators := by
   rcases p with ⟨c, i, s⟩
-  unfold pieceExpand
-  rw [wordToFree_append, wordToFree_append, wordToFree_wordInv]
-  rcases hr : relWords.getD i [] with _ | _
-  all_goals ?_
-  sorry
+  have hN : (Subgroup.normalClosure relators).Normal := Subgroup.normalClosure_normal
+  have hmid : wordToFree (if s then relWords.getD i [] else wordInv (relWords.getD i []))
+      ∈ Subgroup.normalClosure relators := by
+    by_cases hi : i < relWords.length
+    · have hmem : relWords.getD i [] ∈ relWords := by
+        rw [List.getD_eq_getElem _ _ hi]
+        exact List.getElem_mem hi
+      have hbase : wordToFree (relWords.getD i []) ∈ Subgroup.normalClosure relators :=
+        Subgroup.subset_normalClosure (hrel _ hmem)
+      simp only [List.getD] at hbase
+      cases s <;> simp [wordToFree_wordInv, inv_mem hbase, hbase]
+    · have hnil : relWords.getD i [] = [] :=
+        List.getD_eq_default _ _ (le_of_not_gt hi)
+      simp only [List.getD] at hnil
+      cases s <;> simp [hnil, wordInv]
+  have := hN.conj_mem _ hmid (wordToFree c)
+  simpa [pieceExpand, wordToFree_append, wordToFree_wordInv, mul_assoc] using this
+
+/-- The concatenated pieces of a certificate lie in the normal closure. -/
+theorem pieces_mem_normalClosure (pieces : List (List Letter × Nat × Bool))
+    (hrel : ∀ r ∈ relWords, wordToFree r ∈ relators) :
+    wordToFree (pieces.flatMap pieceExpand) ∈ Subgroup.normalClosure relators := by
+  induction pieces with
+  | nil => simpa using one_mem _
+  | cons p ps ih =>
+      rw [List.flatMap_cons, wordToFree_append]
+      exact mul_mem (pieceExpand_mem_normalClosure p hrel) ih
 
 /-- Checker soundness: an accepted certificate proves equality in Γ. -/
 theorem eval_eq_of_check (e : ProductEquality)
     (hrel : ∀ r ∈ relWords, wordToFree r ∈ relators)
     (h : checkEquality e = true) : eval e.lhs = eval e.rhs := by
-  sorry
+  have hfree : wordToFree (e.pieces.flatMap pieceExpand)
+      = wordToFree (e.lhs ++ wordInv e.rhs) :=
+    wordToFree_eq_of_reduce_eq (by simpa [checkEquality] using h)
+  have hmem : wordToFree e.lhs * (wordToFree e.rhs)⁻¹ ∈ Subgroup.normalClosure relators := by
+    have := pieces_mem_normalClosure e.pieces hrel
+    rw [hfree, wordToFree_append, wordToFree_wordInv] at this
+    exact this
+  have hN : (Subgroup.normalClosure relators).Normal := Subgroup.normalClosure_normal
+  have hmem' : (wordToFree e.lhs)⁻¹ * wordToFree e.rhs ∈ Subgroup.normalClosure relators := by
+    have hinv : wordToFree e.rhs * (wordToFree e.lhs)⁻¹ ∈ Subgroup.normalClosure relators := by
+      simpa using inv_mem hmem
+    simpa [mul_assoc] using hN.conj_mem _ hinv (wordToFree e.lhs)⁻¹
+  exact QuotientGroup.eq.mpr hmem'
 
 end Karanos
