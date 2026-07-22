@@ -53,9 +53,9 @@ The certificate data is produced and independently self-verified by the
 search engine (github, private) — the finite-quotient cover in
 `quotients.py` (gate G-a) and the proof-forest certificate DAG in
 `certgraph.py` (gate G-b). The numbers behind this development: 874
-distinctness pairs separated by two quotients; 561 product-coincidence
-equalities certified in 667 shared conjugated-relator lemmas totalling
-about 34,000 letters.
+distinctness pairs separated by two quotients; 896 product pairs, each
+with a flat partner certificate re-verified by free reduction in Python
+before transcription and re-checked from scratch by the Lean kernel.
 
 ## Verifying
 
