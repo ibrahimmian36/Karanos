@@ -54,6 +54,20 @@ evaluates, once, over the whole generated list. -/
 def checkEquality (e : ProductEquality) : Bool :=
   reduce (e.pieces.flatMap pieceExpand) == reduce (e.lhs ++ wordInv e.rhs)
 
+/-- The letter-word relators map to `Core.relators` in the free group.
+Both are concrete free-group elements, so the two memberships reduce to
+decidable equalities of normal forms. -/
+theorem relWords_sound : ∀ r ∈ relWords, wordToFree r ∈ relators := by
+  intro r hr
+  simp only [relWords, List.mem_cons, List.not_mem_nil, or_false] at hr
+  rcases hr with h | h
+  · subst h
+    simp only [relators, Set.mem_insert_iff, Set.mem_singleton_iff]
+    left; decide
+  · subst h
+    simp only [relators, Set.mem_insert_iff, Set.mem_singleton_iff]
+    right; decide
+
 /-! ## Soundness of the reducer -/
 
 @[simp] theorem wordToFree_nil : wordToFree [] = 1 := rfl
