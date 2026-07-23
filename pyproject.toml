@@ -1,0 +1,21 @@
+[project]
+name = "karanos-engine"
+version = "0.1.0"
+description = "Search and certificate extraction for the Kaplansky zero-divisor program on Gardam's group"
+requires-python = ">=3.12"
+
+[tool.ruff]
+line-length = 100
+src = ["engine", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "N806"]
+
+[tool.mypy]
+strict = true
+mypy_path = "engine"
+files = ["engine"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["engine"]

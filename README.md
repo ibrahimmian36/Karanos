@@ -50,7 +50,7 @@ The certificate has two mechanically-checked halves:
 ## Provenance
 
 The certificate data is produced and independently self-verified by the
-search engine (github, private) — the finite-quotient cover in
+search engine in `engine/` — the finite-quotient cover in
 `quotients.py` (gate G-a) and the proof-forest certificate DAG in
 `certgraph.py` (gate G-b). The numbers behind this development: 874
 distinctness pairs separated by two quotients; 896 product pairs, each
@@ -74,3 +74,38 @@ every push. The headline:
 'Karanos.gamma_not_uniqueProds' depends on axioms:
   [propext, Classical.choice, Quot.sound]
 ```
+
+## Repository layout
+
+Everything for this problem lives here: the search that found the witness,
+the extraction that turned it into certificates, the Lean proof, the
+evidence trail, and the write-up.
+
+    Karanos/          the Lean development (the theorem)
+      Core.lean         Γ as a PresentedGroup, the certificate vocabulary
+      Reduce.lean       word reduction + certificate-checker soundness
+      Distinct.lean     the ℤ/42 and S₄ descents, pairwise distinctness
+      NonUP.lean        assembly → gamma_not_uniqueProds
+      Generated/        emitted certificate data (do not hand-edit)
+      AxiomCheck.lean   publication manifest
+      AxiomAudit.lean   mechanical whole-library axiom audit
+    engine/           the search + extraction pipeline (Python)
+      kaplansky.py      Γ substrate, SAT encodings, scorers
+      groupball.py      merge-witnessed Todd–Coxeter ball quotients
+      certgraph.py      proof-producing closure → equality certificates
+      quotients.py      finite-quotient search → distinctness
+      gf2.py            the F₂ kernel test and its campaign drivers
+    scripts/          drivers: axiom_gate.sh, codegen, table builds, runs
+    tests/            48 tests over the engine
+    docs/             plan, GPU/scale analysis, run book, arXiv note
+    runs/             the append-only ledger — every search verdict, dated
+
+The Python side is untrusted by construction: it searches, extracts, and
+self-verifies, then emits data that Lean re-checks from scratch. Nothing
+it produces is believed because it produced it.
+
+## Running the search
+
+    python -m pytest                      # engine tests
+    PYTHONPATH=engine python -m karanos_engine.gf2 controls
+    PYTHONPATH=engine python scripts/p2_codegen.py    # regenerate certificates
