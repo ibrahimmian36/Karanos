@@ -1,10 +1,9 @@
 """Kaplansky zero-divisor program: the Γ substrate and its scorers.
 
-Target (founder-approved 2026-07-20, see kaplansky-zd/PHASE0.md at the
-workspace root): Γ = ⟨a,b | aba²b⁻¹a²b⁻², ab³ab⁴a⁻¹b⟩, the torsion-free
-Ã₂-building lattice from Giles Gardam's SMRI slides (2021-10-05) — the one
-concrete non-unique-product group where the zero-divisor conjecture is
-open in every characteristic.
+Target: Γ = ⟨a,b | aba²b⁻¹a²b⁻², ab³ab⁴a⁻¹b⟩, the torsion-free
+Ã₂-building lattice from Giles Gardam's SMRI slides (2021-10-05) — a
+concrete non-unique-product group where the zero-divisor conjecture
+remains open.
 
 Anchor discipline: the ball table is TRUSTED ONLY after reproducing the
 two published anchors — B(4) is a tree (161 elements, i.e. free) and
