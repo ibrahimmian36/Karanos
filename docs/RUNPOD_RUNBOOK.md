@@ -30,17 +30,17 @@ On the workstation, pack the repo at the pushed commit plus the ball table.
 Fill `$PORT` and `$HOST` from the pod's Connect → SSH panel:
 
 ```bash
-cd ~/Desktop/3kvc/erdos-engine
-git archive --format=tar.gz -o /tmp/erdos-engine.tar.gz HEAD
-scp -P $PORT /tmp/erdos-engine.tar.gz runs/gamma_ball.pickle root@$HOST:/root/
+cd ~/Desktop/3kvc/karanos
+git archive --format=tar.gz -o /tmp/karanos.tar.gz HEAD
+scp -P $PORT /tmp/karanos.tar.gz runs/gamma_ball.pickle root@$HOST:/root/
 ```
 
 On the pod:
 
 ```bash
-mkdir -p erdos-engine && tar -xzf erdos-engine.tar.gz -C erdos-engine
-mkdir -p erdos-engine/runs && mv gamma_ball.pickle erdos-engine/runs/
-bash erdos-engine/scripts/runpod_bootstrap.sh
+mkdir -p karanos && tar -xzf karanos.tar.gz -C karanos
+mkdir -p karanos/runs && mv gamma_ball.pickle karanos/runs/
+bash karanos/scripts/runpod_bootstrap.sh
 ```
 
 The bootstrap refuses to run without the pickle, re-checks the published
@@ -48,7 +48,7 @@ anchors before launching anything, and prints three PIDs. A quick look
 before logging off:
 
 ```bash
-tail erdos-engine/runs/logs/*.log
+tail karanos/runs/logs/*.log
 ```
 
 ## Morning: retrieve and verify
@@ -57,8 +57,8 @@ Pull everything into a **subdirectory** — never onto the live `runs/`
 (the local ledger must not be clobbered; results are merged after review):
 
 ```bash
-scp -P $PORT -r "root@${HOST}:erdos-engine/runs/logs" runs/runpod/logs
-scp -P $PORT "root@${HOST}:erdos-engine/runs/kaplansky.ledger.jsonl" "root@${HOST}:erdos-engine/runs/tier2_probe.json" runs/runpod/
+scp -P $PORT -r "root@${HOST}:karanos/runs/logs" runs/runpod/logs
+scp -P $PORT "root@${HOST}:karanos/runs/kaplansky.ledger.jsonl" "root@${HOST}:karanos/runs/tier2_probe.json" runs/runpod/
 ```
 
 Two traps, both hit on 2026-07-22: the pod's minimized Ubuntu has no rsync, and in

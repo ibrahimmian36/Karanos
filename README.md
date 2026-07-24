@@ -42,7 +42,7 @@ The certificate has two mechanically-checked halves:
 - `Karanos/NonUP.lean` — assembly: the certified equalities and
   distinctness give `¬ UniqueProds Γ`.
 - `Karanos/Generated/` — the certificate data, emitted by
-  `erdos-engine/scripts/p2_codegen.py` from the Python proof-forest
+  `scripts/p2_codegen.py` from the Python proof-forest
   extractor. Generated, never hand-edited; the Lean side re-checks it
   from scratch, so the generator is not a trusted component.
 - `scripts/axiom_gate.sh` — the publication gate.

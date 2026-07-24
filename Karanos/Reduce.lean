@@ -9,7 +9,7 @@ import Karanos.Core
 The computational heart of Karanos: a stack-based reducer on letter
 words, its compatibility with the free-group image, and the soundness
 theorem for `ProductEquality` certificates — if the checker accepts a
-certificate, the two words are genuinely equal in Γ.
+certificate, the two words are equal in Γ.
 
 The reducer is written as a left fold with an explicit stack so that
 kernel reduction is linear in the word length; the certificates total
@@ -35,7 +35,7 @@ def wordInv (w : List Letter) : List Letter :=
   (w.map Letter.inv).reverse
 
 /-- The two relators as letter words (must match `Core.relators`;
-`relators_eq_wordToFree` pins the correspondence). -/
+`relWords_sound` pins the correspondence). -/
 def relWords : List (List Letter) :=
   [ [.a, .b, .a, .a, .B, .a, .a, .B, .B],
     [.a, .b, .b, .b, .a, .b, .b, .b, .b, .A, .b] ]
