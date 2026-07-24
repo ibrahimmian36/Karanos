@@ -10,11 +10,14 @@ publication gate that rejects any theorem depending on an axiom beyond
 Lean's standard three (`propext`, `Classical.choice`, `Quot.sound`), any
 `sorry`, or any `native_decide`.
 
-Γ is the concrete group on which the zero-divisor form of Kaplansky's
-conjecture is open in every characteristic (Gardam, SMRI 2021). Its
-failure of unique products is the first step of that landscape; this
-development certifies it. Torsion-freeness of Γ is a separate result of
-Gardam's and is **not** claimed here — the theorem stands on its own.
+Γ is a concrete group on which the zero-divisor form of Kaplansky's
+conjecture remains open (Gardam, SMRI 2021). Being an Ã₂ lattice, it has
+property (T), so it admits no proper action on a CAT(0) cube complex
+(Niblo–Reeves; Cornulier) and lies outside the reach of the cubulation
+methods that settle the conjecture for virtually compact special groups.
+Failure of unique products is a necessary condition in that landscape;
+this development certifies it. Torsion-freeness of Γ is a separate result
+of Gardam's and is **not** claimed here — the theorem stands on its own.
 
 ## What is proved
 
