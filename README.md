@@ -81,8 +81,8 @@ every push. The headline:
 ## Repository layout
 
 Everything for this problem lives here: the search that found the witness,
-the extraction that turned it into certificates, the Lean proof, the
-evidence trail, and the write-up.
+the extraction that turned it into certificates, the Lean proof, and the
+evidence trail.
 
     Karanos/          the Lean development (the theorem)
       Core.lean         Γ as a PresentedGroup, the certificate vocabulary
@@ -100,7 +100,7 @@ evidence trail, and the write-up.
       gf2.py            the F₂ kernel test and its campaign drivers
     scripts/          drivers: axiom_gate.sh, codegen, table builds, runs
     tests/            48 tests over the engine
-    docs/             plan, GPU/scale analysis, run book, arXiv note
+    docs/             plan, GPU/scale analysis, run book
     runs/             the append-only ledger — every search verdict, dated
 
 The Python side is untrusted by construction: it searches, extracts, and
