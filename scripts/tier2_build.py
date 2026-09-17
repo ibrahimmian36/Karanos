@@ -1,5 +1,5 @@
 """Tier-2 probe: build a deeper Γ quotient and cross-check it against the
-current table (docs/KAPLANSKY_GPU_PLAN.md, Tier 2).
+current table.
 
 Builds BallQuotient(tree, close) for Γ, times it, records peak RSS, then
 compares ball counts radius-by-radius against the existing anchored

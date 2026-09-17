@@ -7,7 +7,7 @@ set_option linter.style.header false
 namespace Karanos.Generated
 
 
-/-- The abelianization ℤ/42 is defined in Karanos.Core; the
+/-- The abelianization ℤ/42 is defined in Karanos.Distinct; the
 permutation homomorphisms that finish distinctness follow. -/
 
 /-- Separating homomorphism 0 into S_4. -/

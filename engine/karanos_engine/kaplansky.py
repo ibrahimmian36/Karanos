@@ -81,7 +81,7 @@ _CACHE: GammaBall | None = None
 def build_gamma(cache_dir: Path | None = None) -> GammaBall:
     """Build (or load) the anchored Γ table. Raises AssertionError with a
     plain message if the anchors fail — an unanchored table must never be
-    used downstream, per PHASE0 discipline."""
+    used downstream."""
     global _CACHE
     if _CACHE is not None:
         return _CACHE

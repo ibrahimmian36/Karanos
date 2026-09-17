@@ -1,131 +1,117 @@
 # Karanos
 
-A machine-checked proof that Γ, the torsion-free Ã₂-building lattice
+A proof, checked by the Lean 4 kernel, that the group
 
-    Γ = ⟨a, b | a b a² b⁻¹ a² b⁻², a b³ a b⁴ a⁻¹ b⟩,
+    Γ = ⟨a, b | a b a² b⁻¹ a² b⁻², a b³ a b⁴ a⁻¹ b⟩
 
-does **not** have the unique-product property — `¬ UniqueProds Γ`, stated
-against mathlib's own `UniqueProds` class, kernel-checked, with a
-publication gate that rejects any theorem depending on an axiom beyond
-Lean's standard three (`propext`, `Classical.choice`, `Quot.sound`), any
-`sorry`, or any `native_decide`.
+does not have the unique-product property:
 
-That Γ fails unique products is a theorem announced by Giles Gardam in
-lectures in 2021, where he proposed Γ as a candidate for Kaplansky's
-zero-divisor conjecture; no proof or witness has been published. This
-repository supplies a kernel-checked proof with an explicit witness found
-by our own search. The mathematical statement is Gardam's.
+    theorem gamma_not_uniqueProds : ¬ UniqueProds Gamma
 
-Being an Ã₂ lattice, Γ has property (T), so it admits no proper action on
-a CAT(0) cube complex (Niblo–Reeves) and lies outside the reach of the
-methods that settle the conjecture for virtually compact special groups.
-Torsion-freeness of Γ and its description as a lattice are Gardam's and
-are **not** formalized here — the theorem is about the presented group and
-stands on its own.
+The statement uses mathlib's own `UniqueProds` class. The development
+depends only on Lean's three standard axioms (`propext`,
+`Classical.choice`, `Quot.sound`), with no `sorry` and no `native_decide`.
+
+## Whose theorem this is
+
+That Γ fails unique products was announced by Giles Gardam in lectures in
+2021, where he presented Γ, a torsion-free Ã₂ lattice with property (T),
+as a new candidate group for Kaplansky's zero-divisor conjecture
+([slides, 17 Sep 2021](https://www.gilesgardam.com/slides/gncg.pdf);
+[slides, 25 Nov 2021](https://sschleimer.warwick.ac.uk/Seminar/Talks/2021-11-25gardam.pdf)).
+To our knowledge no proof or witness has been published. This repository
+supplies a kernel-checked proof with an explicit witness found by our own
+search. The mathematical statement is Gardam's.
+
+Torsion-freeness of Γ, its description as a lattice, and property (T) are
+Gardam's and are **not** formalized here. The theorem is about the
+presented group and does not depend on them. Nothing here concerns zero
+divisors.
 
 ## What is proved
 
-The witness is an explicit pair of finite sets `A` (32 elements) and `B`
-(28 elements) of Γ. Unique-product failure means: every product `a·b`
-with `a ∈ A`, `b ∈ B` coincides with at least one other such product.
-The certificate has two mechanically-checked halves:
+The witness is a pair of lists of reduced words: 32 words for `A` and 28
+for `B`, each of length at most six. For each of the 896 pairs `(u, v)`
+the data name a different pair `(u', v')` of listed words, and Lean checks
 
-- **Equalities** — the product coincidences, each certified by an
-  explicit free-group identity (a product of conjugated relators) that
-  Lean verifies by word reduction. Extracted from a proof-producing
-  Todd–Coxeter closure and self-verified in Python before transcription.
-- **Distinctness** — that the elements of `A` (and of `B`) are pairwise
-  distinct in Γ, via homomorphisms to finite groups: the map onto
-  `ℤ/42` (the abelianization) separates all but six pairs, and one
-  homomorphism into `S₄`, with image `A₄`, separates the rest. Each is
-  checked in Lean by `decide`.
+- **an equality** `uv = u'v'` in Γ, certified by an explicit identity in
+  the free group: `(uv)(u'v')⁻¹` written as a product of conjugated
+  relators, verified by free reduction. In 658 cases the identity already
+  holds in the free group; the other 238 certificates use 970 conjugated
+  relators in all.
+- **a disequality** `u ≠ u'` or `v ≠ v'` in Γ, certified by a homomorphism
+  to a finite group. The map `a ↦ −8, b ↦ 1` onto `ℤ/42` separates `v`
+  from `v'` in all 896 cases, which is all the theorem needs.
 
-## Layout
-
-- `Karanos/Core.lean` — Γ as a `PresentedGroup`, the letter alphabet, the
-  word-to-Γ map, and the certificate data types.
-- `Karanos/Reduce.lean` — free reduction and the soundness lemma: a
-  certificate that reduces to `lhs · rhs⁻¹` proves `eval lhs = eval rhs`.
-- `Karanos/Distinct.lean` — the finite-quotient separation argument.
-- `Karanos/NonUP.lean` — assembly: the certified equalities and
-  distinctness give `¬ UniqueProds Γ`.
-- `Karanos/Generated/` — the certificate data, emitted by
-  `scripts/p2_codegen.py` from the Python proof-forest
-  extractor. Generated, never hand-edited; the Lean side re-checks it
-  from scratch, so the generator is not a trusted component.
-- `scripts/axiom_gate.sh` — the publication gate.
-
-## Provenance
-
-The certificate data is produced and independently self-verified by the
-search engine in `engine/` — the finite-quotient cover in
-`quotients.py` (gate G-a) and the proof-forest certificate DAG in
-`certgraph.py` (gate G-b). The numbers behind this development: 874
-distinctness pairs separated by two quotients; 896 product pairs, each
-with a flat partner certificate re-verified by free reduction in Python
-before transcription and re-checked from scratch by the Lean kernel.
+The development also proves that the listed words are pairwise distinct in
+Γ, so that the sets have exactly 32 and 28 elements: `ℤ/42` separates 868
+of the 874 pairs, and a homomorphism into `S₄` with image `A₄` separates
+the other six.
 
 ## Verifying
 
-```
-lake exe cache get
-lake build
-scripts/axiom_gate.sh
-```
+    lake exe cache get
+    lake build
+    scripts/axiom_gate.sh
+
+The gate audits every theorem constant in the compiled library (122) and
+fails on any `sorry`, any `native_decide`, or any axiom beyond the
+standard three. CI runs it on every push. For the main theorem it prints
+
+    'Karanos.gamma_not_uniqueProds' depends on axioms: [propext, Classical.choice, Quot.sound]
 
 The certificates can also be checked without Lean:
 
-```
-python3 scripts/recheck_certificates.py
-```
+    python3 scripts/recheck_certificates.py
 
-reads the generated files directly and re-verifies every equality
-certificate by free reduction and every distinctness fact through the two
-quotients (standard library only, under a second). Of the 896 product
-coincidences, 658 already hold in the free group; the other 238 use 970
-conjugated relators in all.
+This script uses only the Python standard library. It reads the two
+generated data files and re-verifies every equality certificate by free
+reduction and every disequality through the two homomorphisms.
 
-The gate re-checks every theorem in the library (122 at last count)
-against the allowed axiom set and fails on any `sorry`, any
-`native_decide`, or any axiom beyond the standard three. CI runs it on
-every push. The headline:
+## Layout
 
-```
-'Karanos.gamma_not_uniqueProds' depends on axioms:
-  [propext, Classical.choice, Quot.sound]
-```
+    Karanos/            the Lean development
+      Core.lean           Γ as a PresentedGroup; words; certificate types
+      Reduce.lean         free reduction; soundness of the equality checker
+      Distinct.lean       the two homomorphisms; pairwise distinctness
+      NonUP.lean          the 896-certificate check; gamma_not_uniqueProds
+      Generated/          witness and certificate data (never hand-edited)
+      AxiomCheck.lean     manifest of published theorems
+      AxiomAudit.lean     audit of every theorem constant in the library
+    engine/             the search program (Python, untrusted)
+      groupball.py        Todd–Coxeter ball quotients that record proofs
+      certgraph.py        extraction of equality certificates
+      quotients.py        search for separating finite quotients
+      kaplansky.py        Γ, SAT encodings of the unique-product condition
+      gf2.py              kernel test over F₂ used by the search
+    scripts/            axiom gate, certificate generation, independent checker
+    tests/              tests for the search program
+    runs/               dated log of every search result
 
-## Repository layout
+The Python side is untrusted. It searches, extracts and checks its own
+output, then emits data that Lean re-checks; an error there can make the
+build fail but cannot make a false theorem pass.
 
-Everything for this problem lives here: the search that found the witness,
-the extraction that turned it into certificates, the Lean proof, and the
-evidence trail.
+Running the tests:
 
-    Karanos/          the Lean development (the theorem)
-      Core.lean         Γ as a PresentedGroup, the certificate vocabulary
-      Reduce.lean       word reduction + certificate-checker soundness
-      Distinct.lean     the ℤ/42 and S₄ descents, pairwise distinctness
-      NonUP.lean        assembly → gamma_not_uniqueProds
-      Generated/        emitted certificate data (do not hand-edit)
-      AxiomCheck.lean   publication manifest
-      AxiomAudit.lean   mechanical whole-library axiom audit
-    engine/           the search + extraction pipeline (Python)
-      kaplansky.py      Γ substrate, SAT encodings, scorers
-      groupball.py      merge-witnessed Todd–Coxeter ball quotients
-      certgraph.py      proof-producing closure → equality certificates
-      quotients.py      finite-quotient search → distinctness
-      gf2.py            the F₂ kernel test and its campaign drivers
-    scripts/          drivers: axiom_gate.sh, codegen, table builds, runs
-    tests/            48 tests over the engine
-    docs/             plan, GPU/scale analysis, run book
-    runs/             the append-only ledger — every search verdict, dated
+    python -m pytest
 
-The Python side is untrusted by construction: it searches, extracts, and
-self-verifies, then emits data that Lean re-checks from scratch. Nothing
-it produces is believed because it produced it.
+Regenerating the certificate data (`scripts/p2_codegen.py`) first rebuilds
+the ball quotient, which takes hours; the generated files are committed so
+that this is not needed to verify the theorem.
 
-## Running the search
+## Paper and citation
 
-    python -m pytest                      # engine tests
-    PYTHONPATH=engine python -m karanos_engine.gf2 controls
-    PYTHONPATH=engine python scripts/p2_codegen.py    # regenerate certificates
+A paper describing this development has been submitted to arXiv; the
+identifier will be added here. Until then, see `CITATION.cff`.
+
+## Use of AI tools
+
+A large language model (Claude, Anthropic) wrote most of the Lean and
+Python code in this repository under the authors' direction. The authors
+take responsibility for its contents. The theorem is checked by the Lean
+kernel and does not depend on the correctness of LLM-written code.
+
+## License
+
+Apache 2.0.

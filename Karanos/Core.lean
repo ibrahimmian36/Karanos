@@ -1,16 +1,18 @@
 /-
 Copyright (c) 2026 Millennium Research. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Millennium Research (Ibby Mian), with Claude
+Authors: Ibrahim Mian, Shayaan Siddique
 -/
 import Mathlib
 
 /-!
 # Karanos core: Γ, free words, and the certificate types
 
-Γ = ⟨a, b | a b a² b⁻¹ a² b⁻², a b³ a b⁴ a⁻¹ b⟩ — Gardam's Ã₂-building
-lattice, the concrete torsion-free non-unique-product group on which the
-zero-divisor form of Kaplansky's conjecture is open (SMRI slides, 2021).
+Γ = ⟨a, b | a b a² b⁻¹ a² b⁻², a b³ a b⁴ a⁻¹ b⟩ — the Ã₂ lattice that
+Giles Gardam, in lectures in 2021, announced to be a torsion-free group
+without unique products and proposed as a candidate for Kaplansky's
+zero-divisor conjecture. Torsion-freeness and the lattice description are
+Gardam's and are not formalized here.
 
 This module fixes the group as a `PresentedGroup`, defines the free
 alphabet and the map from letter-words into Γ, and states the data

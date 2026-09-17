@@ -1,6 +1,6 @@
 """GF(2) kernel test for the Kaplansky program (Phase G0 spike).
 
-The reformulation (docs/KAPLANSKY_GPU_PLAN.md): fix a left factor `a`
+The reformulation: fix a left factor `a`
 (a set of group-ring basis elements over F₂), restrict the right factor
 to support inside a region S. Then b ↦ a·b is F₂-linear, and a zero
 divisor with left factor `a` and right support ⊆ S exists iff the matrix

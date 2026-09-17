@@ -115,7 +115,7 @@ def emit_distinct() -> str:
     report = search(verbose=False)
     homs = [c for c in report["cover"] if isinstance(c, dict) and "a" in c]  # type: ignore[union-attr]
     lines = [f"{HEADER}\nnamespace Karanos.Generated\n"]
-    lines.append("\n/-- The abelianization ℤ/42 is defined in Karanos.Core; the")
+    lines.append("\n/-- The abelianization ℤ/42 is defined in Karanos.Distinct; the")
     lines.append("permutation homomorphisms that finish distinctness follow. -/")
     for i, hom in enumerate(homs):
         a = ", ".join(str(x) for x in hom["a"])  # type: ignore[index]

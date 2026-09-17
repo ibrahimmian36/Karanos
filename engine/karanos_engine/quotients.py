@@ -1,5 +1,5 @@
 """Finite-quotient search for Γ — the distinctness half of the P2
-certificate (docs/KAPLANSKY_PLAN.md).
+certificate.
 
 The Lean certificate needs the 32 elements of the non-u.p. witness side A
 (and the 28 of side B) pairwise distinct in Γ. Inequalities cannot come
