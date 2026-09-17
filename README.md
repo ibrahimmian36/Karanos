@@ -10,14 +10,18 @@ publication gate that rejects any theorem depending on an axiom beyond
 Lean's standard three (`propext`, `Classical.choice`, `Quot.sound`), any
 `sorry`, or any `native_decide`.
 
-Γ is a concrete group on which the zero-divisor form of Kaplansky's
-conjecture remains open (Gardam, SMRI 2021). Being an Ã₂ lattice, it has
-property (T), so it admits no proper action on a CAT(0) cube complex
-(Niblo–Reeves; Cornulier) and lies outside the reach of the cubulation
+That Γ fails unique products is a theorem announced by Giles Gardam in
+lectures in 2021, where he proposed Γ as a candidate for Kaplansky's
+zero-divisor conjecture; no proof or witness has been published. This
+repository supplies a kernel-checked proof with an explicit witness found
+by our own search. The mathematical statement is Gardam's.
+
+Being an Ã₂ lattice, Γ has property (T), so it admits no proper action on
+a CAT(0) cube complex (Niblo–Reeves) and lies outside the reach of the
 methods that settle the conjecture for virtually compact special groups.
-Failure of unique products is a necessary condition in that landscape;
-this development certifies it. Torsion-freeness of Γ is a separate result
-of Gardam's and is **not** claimed here — the theorem stands on its own.
+Torsion-freeness of Γ and its description as a lattice are Gardam's and
+are **not** formalized here — the theorem is about the presented group and
+stands on its own.
 
 ## What is proved
 
@@ -31,9 +35,10 @@ The certificate has two mechanically-checked halves:
   Lean verifies by word reduction. Extracted from a proof-producing
   Todd–Coxeter closure and self-verified in Python before transcription.
 - **Distinctness** — that the elements of `A` (and of `B`) are pairwise
-  distinct in Γ, via homomorphisms onto finite groups: the abelianization
-  `Γᵃᵇ ≅ ℤ/42` separates all but six pairs, and one homomorphism onto
-  `S₄` separates the rest. Each is checked in Lean by `decide`.
+  distinct in Γ, via homomorphisms to finite groups: the map onto
+  `ℤ/42` (the abelianization) separates all but six pairs, and one
+  homomorphism into `S₄`, with image `A₄`, separates the rest. Each is
+  checked in Lean by `decide`.
 
 ## Layout
 
@@ -67,6 +72,18 @@ lake exe cache get
 lake build
 scripts/axiom_gate.sh
 ```
+
+The certificates can also be checked without Lean:
+
+```
+python3 scripts/recheck_certificates.py
+```
+
+reads the generated files directly and re-verifies every equality
+certificate by free reduction and every distinctness fact through the two
+quotients (standard library only, under a second). Of the 896 product
+coincidences, 658 already hold in the free group; the other 238 use 970
+conjugated relators in all.
 
 The gate re-checks every theorem in the library (122 at last count)
 against the allowed axiom set and fails on any `sorry`, any

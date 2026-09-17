@@ -9,14 +9,14 @@ import Karanos.Generated.Witness
 /-!
 # Distinctness of the witness elements
 
-Inequalities in Γ come from homomorphisms onto finite groups; two
+Inequalities in Γ come from homomorphisms to finite groups; two
 suffice for all 874 required pairs (found by search, re-verified here
 from scratch):
 
 - the abelianization coordinate `Γ → ℤ/42` (per letter: `a ↦ −8`,
   `b ↦ +1`; the relators' images are `5·(−8) − 2 = −42 ≡ 0` and
   `−8 + 8 = 0`);
-- one homomorphism onto `S₄` (as permutations of `Fin 4`).
+- one homomorphism into `S₄` (permutations of `Fin 4`); its image is `A₄`.
 
 Each lift kills the relators (checked by `decide` after case-splitting
 the two-element relator set), so it descends to Γ by
