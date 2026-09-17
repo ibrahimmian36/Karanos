@@ -15,7 +15,7 @@ certificate, the two words are equal in Γ.
 
 The reducer is written as a left fold with an explicit stack so that
 kernel reduction is linear in the word length; the certificates total
-about 34,000 letters, well inside `decide` territory.
+about 30,000 letters, well inside `decide` territory.
 -/
 
 namespace Karanos

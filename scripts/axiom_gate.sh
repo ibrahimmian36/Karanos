@@ -1,5 +1,5 @@
 #!/bin/bash
-# Erdős-7 publication gate (KAPLANSKY_PLAN.md, P2).
+# Karanos publication gate.
 #
 # Two independent layers, both required:
 #

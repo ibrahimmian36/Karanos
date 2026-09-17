@@ -76,7 +76,7 @@ theorem partners_cover :
   decide
 
 set_option maxHeartbeats 4000000 in
--- the 896 certificates total ~10^5 letters of kernel word reduction;
+-- the 896 certificates total about 30,000 letters of kernel word reduction;
 -- the default heartbeat budget is sized for interactive proofs, not this
 /-- Validity of every entry (memberships, separation, certificates). -/
 theorem partners_ok : Generated.partnerCerts.all entryOk = true := by

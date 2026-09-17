@@ -7,6 +7,7 @@ no dependence on Lean or on the search engine:
   * the 896 partner certificates cover the full grid A x B, and no pair is
     its own partner;
   * every certificate identity holds under free reduction;
+  * the homomorphism to Z/42 alone separates every product from its partner;
   * the homomorphisms to Z/42 and to Sym(4) kill both relators and between
     them separate every pair of distinct witness words.
 
@@ -133,6 +134,8 @@ def main():
           f"{len(certs) - sizes[0]}; conjugates: {total}; largest: {max(sizes)}")
 
     check(all(ab_image(r) == 0 for r in RELATORS), "Z/42 map kills both relators")
+    check(all(ab_image(v) != ab_image(pv) for _, v, _, pv, _ in certs),
+          "Z/42 alone separates v from v' in every certificate")
     check(all(perm_image(r) == (0, 1, 2, 3) for r in RELATORS),
           "Sym(4) map kills both relators")
     by_ab = by_perm = unseparated = 0
